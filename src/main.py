@@ -1,27 +1,38 @@
-import pygame
+import flip_evaluator as flip
+import matplotlib.pyplot as plt
+from PIL import Image
 
-from brdf_ground_truth_cpu import BRDFGroundTruthCPU
+from benchmarker import Benchmarks
+
+
+def showcase_images():
+    ref = "assets/brdf_ground_truth.png"
+    test = "assets/brdf_nn.png"
+
+    flipErrorMap, meanFLIPError, _ = flip.evaluate(ref, test, "LDR")
+    ref_img = Image.open(ref)
+    test_img = Image.open(test)
+
+    fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+    axes[0].imshow(ref_img)
+    axes[0].set_title("Ground Truth")
+    axes[1].imshow(test_img)
+    axes[1].set_title("Neural Output")
+    axes[2].imshow(flipErrorMap)
+    axes[2].set_title(f"FLIP Error (mean: {round(meanFLIPError, 6)})")
+    for ax in axes:
+        ax.axis("off")
+    plt.tight_layout()
+    plt.show()
+
+
+def benchmark():
+    benchmark = Benchmarks()
+    benchmark.run_all()
 
 
 def main():
-    pygame.init()
-    width, height = 512, 512
-    screen = pygame.display.set_mode((width, height))
-    pygame.display.set_caption("LUT Preview")
-
-    image = pygame.image.load("models/brdf_ground_truth.png")
-
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-        lut_scaled = pygame.transform.scale(image, (width, height))
-        screen.blit(lut_scaled, (0, 0))
-        pygame.display.flip()
-
-    pygame.quit()
+    showcase_images()
 
 
 if __name__ == "__main__":
