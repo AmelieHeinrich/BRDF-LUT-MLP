@@ -1,6 +1,6 @@
 # BRDF LUT MLP
 
-![](.github/screenshot.png)
+![](.github/Screenshot%202026-02-22%20at%2014.49.00.png)
 
 A small MLP trained to approximate the split-sum BRDF integration lookup table used in IBL rendering, replacing a precomputed 512×512 texture with a learned function.
 
@@ -12,18 +12,18 @@ A small MLP trained to approximate the split-sum BRDF integration lookup table u
 | -------------- | -------------------------------- |
 | Inputs         | 2 (NdotV, roughness)             |
 | Outputs        | 2 (scale, bias)                  |
-| Hidden layers  | 6x128                            |
+| Hidden layers  | 6x32                             |
 | Activation     | GELU (hidden), Sigmoid (output)  |
 | Loss           | MSE                              |
-| Optimizer      | Adam (lr=1e-3)                   |
+| Optimizer      | Adam (lr=0.01)                   |
 
 ## Results
 
-| Metric                | Value                  |
-| --------------------- | ---------------------- |
-| Training time         | 48.4s (30 epochs)      |
-| Inference (512x512)   | 259.7ms                |
-| Model size            | 329.5 KB               |
-| Raw LUT size          | 2048 KB                |
-| Compression ratio     | 6.2x                   |
-| Mean FLIP error       | 0.024699               |
+| Metric                | Value                   |
+| --------------------- | ----------------------- |
+| Training time         | 115.4s (100 epochs)     |
+| Inference (512x512)   | 64.912ms                |
+| Model size            | 25.5 KB                 |
+| Raw LUT size          | 2048 KB                 |
+| Compression ratio     | 79.56x                  |
+| Mean FLIP error       | 0.025993                |

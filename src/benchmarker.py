@@ -28,7 +28,7 @@ class Benchmarks:
         }
 
     def benchmark_training(
-        self, lr: float = 1e-3, epochs: int = 30, batch_size: int = 4096
+        self, lr: float = 0.01, epochs: int = 100, batch_size: int = 4096
     ) -> dict:
         print(f"Benchmarking training ({epochs} epochs)...")
         model = BRDFModel()

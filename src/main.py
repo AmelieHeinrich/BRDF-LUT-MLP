@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 
 from benchmarker import Benchmarks
+from brdf_nn_training import BRDFModel, BRDFNeuralTraining
 
 
 def showcase_images():
@@ -24,6 +25,14 @@ def showcase_images():
         ax.axis("off")
     plt.tight_layout()
     plt.show()
+
+
+def generate_model():
+    model = BRDFModel()
+    trainer = BRDFNeuralTraining()
+    trainer.train(model, 0.01, 100)
+    model.save("assets/brdf_nn.pth")
+    trainer.infer(model, "assets/brdf_nn.png")
 
 
 def benchmark():

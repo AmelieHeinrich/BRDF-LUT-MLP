@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader, TensorDataset
 
 
 class BRDFModel(nn.Module):
-    def __init__(self, hidden=128, depth=6):
+    def __init__(self, hidden=32, depth=6):
         super().__init__()
         layers = [nn.Linear(2, hidden), nn.GELU()]
         for _ in range(depth - 1):
@@ -62,6 +62,7 @@ class BRDFNeuralTraining:
         loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
         optimizer = torch.optim.Adam(model.parameters(), lr=lr)
         loss_fn = nn.MSELoss()
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs)
 
         for epoch in range(epochs):
             total_loss = 0.0
@@ -73,3 +74,4 @@ class BRDFNeuralTraining:
                 optimizer.step()
                 total_loss += loss.item()
             print(f"Epoch {epoch}, Loss: {total_loss / len(loader):.6f}")
+            scheduler.step()
